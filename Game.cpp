@@ -21,7 +21,6 @@ void Game::initWindow()
 	this->videoModes = sf::VideoMode::getFullscreenModes();
 
 
-
 	std::string title = "None";
 	sf::VideoMode  window_bounds = sf::VideoMode::getDesktopMode();
 	

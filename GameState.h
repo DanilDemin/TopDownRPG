@@ -6,10 +6,12 @@ class GameState
 	: public State
 {
 private:
-	Entity player;
+	Player* player;
 
 	//Functions
 	void initKeybinds();
+	void initTextures();
+	void initPlayers();
 
 public:
 	GameState(sf::RenderWindow* window,

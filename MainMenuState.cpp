@@ -55,20 +55,46 @@ void MainMenuState::initKeybinds()
 
 void MainMenuState::initButtons()
 {
-	buttons["GAME_STATE"] = new Button(100, 100, 250, 100, &font,
-		"New Game", sf::Color(70, 70, 70, 200),
-		sf::Color(150, 150, 150, 250),
-		sf::Color(20, 20, 20, 200));
+	buttons["GAME_STATE"] = new Button(100.f, 100.f, 250.f, 100.f, &font,
+		"New Game", 50,
+		sf::Color(70, 70, 70, 200),
+		sf::Color(250, 250, 250, 250),
+		sf::Color(20, 20, 20, 50),
 
-	buttons["SETTINGS"] = new Button(100, 300, 250, 100, &font,
-		"Settings", sf::Color(70, 70, 70, 200),
-		sf::Color(150, 150, 150, 250),
-		sf::Color(20, 20, 20, 200));
+		sf::Color(70, 70, 70, 0), 
+		sf::Color(150, 150, 150, 0),
+		sf::Color(20, 20, 20, 0));
 
-	buttons["EXIT_STATE"] = new Button(100, 500, 250, 100, &font,
-		"Quit", sf::Color(100, 100, 100, 200),
-		sf::Color(150, 150, 150, 250),
-		sf::Color(20, 20, 20, 200));
+	buttons["SETTINGS"] = new Button(100.f, 300.f, 250.f, 100.f, &font,
+		"Settings", 50,
+		sf::Color(70, 70, 70, 200),
+		sf::Color(250, 250, 250, 250),
+		sf::Color(20, 20, 20, 50),
+
+		sf::Color(70, 70, 70, 0),
+		sf::Color(150, 150, 150, 0),
+		sf::Color(20, 20, 20, 0));
+
+	buttons["EDITOR_STATE"] = new Button(100.f, 500.f, 250.f, 100.f, &font,
+		"Edditor", 50,
+		sf::Color(70, 70, 70, 200),
+		sf::Color(250, 250, 250, 250),
+		sf::Color(20, 20, 20, 50),
+
+		sf::Color(70, 70, 70, 0),
+		sf::Color(150, 150, 150, 0),
+		sf::Color(20, 20, 20, 0));
+
+
+	buttons["EXIT_STATE"] = new Button(100.f, 800.f, 250.f, 100.f, &font,
+		"Quit", 50,
+		sf::Color(70, 70, 70, 200),
+		sf::Color(250, 250, 250, 250),
+		sf::Color(20, 20, 20, 50),
+
+		sf::Color(100, 100, 100, 0),
+		sf::Color(150, 150, 150, 0),
+		sf::Color(20, 20, 20, 0));
 
 }
 
@@ -107,10 +133,20 @@ void MainMenuState::updateButtons()
 	}
 
 
-	//New Game
+	//Settings
+
+	//Editor
 	if (buttons["GAME_STATE"]->isPressed())
 	{
-		states->push(new GameState(window, supportedKeys, states));
+		states->push(new GameState(this->window, this->supportedKeys, this->states));
+	}
+
+
+
+	//New Game
+	if (buttons["EDITOR_STATE"]->isPressed())
+	{
+		states->push(new EditorState(this->window, this->supportedKeys, this->states));
 	}
 
 	//Quit the game
@@ -127,8 +163,6 @@ void MainMenuState::update(const float& dt)
 	updateInput(dt);
 	updateButtons();
 
-	
-	
 }
 
 void MainMenuState::renderButtons(sf::RenderTarget* target)

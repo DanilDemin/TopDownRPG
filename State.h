@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Entity.h"
+#include "Player.h"
 
 class State
 {
@@ -15,7 +15,7 @@ protected:
 	bool quit;
 
 	//Resoureces
-	std::vector<sf::Texture*> textures;
+	std::map<std::string, sf::Texture> textures;
 
 	//Functions
 	virtual void initKeybinds() = 0;
