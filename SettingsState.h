@@ -2,12 +2,13 @@
 #include "State.h"
 #include "Button.h"
 
-class EditorState :
+class SettingsState :
     public State
 {
 private:
-
 	//Variables
+	sf::Texture backgroundTexture;
+	sf::RectangleShape background;
 	sf::Font font;
 
 	std::map<std::string, Button*> buttons;
@@ -20,18 +21,15 @@ private:
 	void initFonts();
 	void initKeybinds();
 	void initButtons();
-
 public:
+    //Con/Des
+    SettingsState(sf::RenderWindow* window,
+        std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+    virtual ~SettingsState();
 
-	//Con/Des
-	EditorState(sf::RenderWindow* window,
-		std::map<std::string, int>* supportedKeys,
-		std::stack<State*>* states);
+    //Accessors
 
-	virtual ~EditorState();
-
-	//Functions
-
+    //Functions
 	void updateInput(const float& dt);
 	void updateButtons();
 	void update(const float& dt);

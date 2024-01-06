@@ -1,6 +1,7 @@
 #pragma once
 #include "GameState.h"
 #include "EditorState.h"
+#include "SettingsState.h"
 #include "Button.h" 
 
 
@@ -39,7 +40,7 @@ public:
 	void updateInput(const float& dt);
 	void updateButtons();
 	void update(const float& dt);
-	void renderButtons(sf::RenderTarget* target = NULL);
+	void renderButtons(sf::RenderTarget& target);
 	void render(sf::RenderTarget* target = NULL);
 };
 
