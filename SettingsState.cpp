@@ -90,6 +90,7 @@ SettingsState::~SettingsState()
 
 //Accessors
 
+
 //Functions
 void SettingsState::updateInput(const float& dt)
 {
