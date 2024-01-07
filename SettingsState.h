@@ -28,7 +28,10 @@ public:
     virtual ~SettingsState();
 
     //Accessors
-
+	// 
+	// 
+	// 
+	// 
     //Functions
 	void updateInput(const float& dt);
 	void updateButtons();
