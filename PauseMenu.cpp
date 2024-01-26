@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "PauseMenu.h"
 
 //Con/Des
@@ -50,7 +51,7 @@ PauseMenu::~PauseMenu()
 }
 
 //Accessors
-std::map<std::string, Button*>& PauseMenu::getButtons()
+std::map<std::string, gui::Button*>& PauseMenu::getButtons()
 {
 	return this->buttons;
 }
@@ -68,7 +69,7 @@ void PauseMenu::addButton(const std::string key, float y, const std::string text
 	float x = this->container.getPosition().x + this->container.getSize().x / 2.f -
 		width / 2.f;
 
-	buttons[key] = new Button(x, y, width, height, &font,
+	buttons[key] = new gui::Button(x, y, width, height, &font,
 		text, 50,
 		sf::Color(70, 70, 70, 200),
 		sf::Color(250, 250, 250, 250),

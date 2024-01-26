@@ -1,14 +1,35 @@
 #pragma once
 
 #include "Player.h"
+#include "GraphicsSettings.h"
+
+//for a speed of compile I think
+class Player;
+class GraphicsSetting;
+class State;
+
+
+class StateData
+{
+public:
+	StateData() {}
+
+	//Variables
+	float gridSize;
+	sf::RenderWindow* window;
+	GraphicsSetting* gfxSettings;
+	std::map<std::string, int>* supportedKeys;
+	std::stack<State*>* states;
+};
+
 
 class State
 {
 private:
 
 protected:
+	StateData* stateData;
 	std::stack<State*>* states;
-
 	sf::RenderWindow* window;
 	std::map<std::string, int>* supportedKeys;
 	std::map<std::string, int> keybinds;
@@ -16,6 +37,7 @@ protected:
 	bool paused;
 	float keyTime;
 	float keyTimeMax;
+	float gridSize;
 
 
 
@@ -29,12 +51,11 @@ protected:
 	sf::Vector2i mousPosScreen;
 	sf::Vector2i mousPosWindow;
 	sf::Vector2f mousePosView;
+	sf::Vector2u mousePosGrid;
 
 
 public:
-	State(sf::RenderWindow* window,
-		std::map<std::string, int>* supportedKeys,
-		std::stack<State*>* states);
+	State(StateData* state_data);
 	virtual ~State();
 
 

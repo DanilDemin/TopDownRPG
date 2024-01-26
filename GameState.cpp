@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "GameState.h"
 
 //Initializer Functions
@@ -44,33 +45,35 @@ void GameState::initPauseMenu()
 {
 	this->pmenu = new PauseMenu(*this->window, this->font);
 	this->pmenu->addButton("QUIT", 900.f, "Quit");
- }
+}
 
 void GameState::initPlayers()
 {
 	this->player = new Player(0, 0, this->textures["Shinobi_Spritelist"]);
 }
 
+void GameState::initTileMap()
+{
+	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10);
+}
+
 //Con/Des
-GameState::GameState
-(
-	sf::RenderWindow* window,
-	std::map<std::string, int>* supportedKeys,
-	std::stack<State*>* states
-)
-	: State(window, supportedKeys, states)
+GameState::GameState(StateData* state_data)
+	: State(state_data)
 {
 	this->initKeybinds();
 	this->initFonts();
 	this->initTextures();
 	this->initPauseMenu();
 	this->initPlayers();
+	this->initTileMap();
 }
 
 GameState::~GameState()
 {
 	delete this->pmenu;
 	delete this->player;
+	delete this->tileMap;
 }
 
 
@@ -151,6 +154,8 @@ void GameState::render(sf::RenderTarget* target)
 		target = this->window;
 	}
 	
+	/*this->map.render(*target);*/
+
 	this->player->render(*target);
 
 

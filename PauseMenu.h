@@ -1,21 +1,6 @@
 #pragma once
 
-#include "Button.h"
-
-#include <iostream>
-#include <ctime>
-#include <cstdlib>
-#include <vector>
-#include <fstream>
-#include <sstream>
-#include <stack>
-#include <map>
-
-#include<SFML/Graphics.hpp>
-#include<SFML/Window.hpp>
-#include<SFML/System.hpp>
-#include<SFML/Audio.hpp>
-#include<SFML/Network.hpp>
+#include "Gui.h"
 
 class PauseMenu
 {
@@ -26,7 +11,7 @@ private:
 	sf::RectangleShape background;
 	sf::RectangleShape container;
 
-	std::map<std::string, Button*> buttons;
+	std::map<std::string, gui::Button*> buttons;
 
 	//Private functions
 
@@ -38,7 +23,7 @@ public:
 
 
 	//Accessors
-	std::map<std::string, Button*>& getButtons();
+	std::map<std::string, gui::Button*>& getButtons();
 
 	//Functions
 	const bool isButtonPressed(const std::string key);

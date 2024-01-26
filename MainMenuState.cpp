@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "MainMenuState.h"
 
 //Initializer functions
@@ -55,7 +56,7 @@ void MainMenuState::initKeybinds()
 
 void MainMenuState::initButtons()
 {
-	buttons["GAME_STATE"] = new Button(100.f, 100.f, 250.f, 100.f, &font,
+	this->buttons["GAME_STATE"] = new gui::Button(100.f, 100.f, 250.f, 100.f, &font,
 		"New Game", 50,
 		sf::Color(70, 70, 70, 200),
 		sf::Color(250, 250, 250, 250),
@@ -65,7 +66,7 @@ void MainMenuState::initButtons()
 		sf::Color(150, 150, 150, 0),
 		sf::Color(20, 20, 20, 0));
 
-	buttons["SETTINGS_STATE"] = new Button(100.f, 300.f, 250.f, 100.f, &font,
+	this->buttons["SETTINGS_STATE"] = new gui::Button(100.f, 300.f, 250.f, 100.f, &font,
 		"Settings", 50,
 		sf::Color(70, 70, 70, 200),
 		sf::Color(250, 250, 250, 250),
@@ -75,7 +76,7 @@ void MainMenuState::initButtons()
 		sf::Color(150, 150, 150, 0),
 		sf::Color(20, 20, 20, 0));
 
-	buttons["EDITOR_STATE"] = new Button(100.f, 500.f, 250.f, 100.f, &font,
+	this->buttons["EDITOR_STATE"] = new gui::Button(100.f, 500.f, 250.f, 100.f, &font,
 		"Edditor", 50,
 		sf::Color(70, 70, 70, 200),
 		sf::Color(250, 250, 250, 250),
@@ -86,7 +87,7 @@ void MainMenuState::initButtons()
 		sf::Color(20, 20, 20, 0));
 
 
-	buttons["EXIT_STATE"] = new Button(100.f, 800.f, 250.f, 100.f, &font,
+	this->buttons["EXIT_STATE"] = new gui::Button(100.f, 800.f, 250.f, 100.f, &font,
 		"Quit", 50,
 		sf::Color(70, 70, 70, 200),
 		sf::Color(250, 250, 250, 250),
@@ -98,9 +99,8 @@ void MainMenuState::initButtons()
 
 }
 
-MainMenuState::MainMenuState(sf::RenderWindow* window,
-	std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
-	: State(window, supportedKeys, states)
+MainMenuState::MainMenuState(StateData* state_data)
+	: State(state_data)
 {	
 	initVariables();
 	initBackground();
@@ -138,21 +138,21 @@ void MainMenuState::updateButtons()
 	//Editor
 	if (buttons["GAME_STATE"]->isPressed())
 	{
-		states->push(new GameState(this->window, this->supportedKeys, this->states));
+		states->push(new GameState(this->stateData));
 	}
 
 
 	//Settings
 	if (buttons["SETTINGS_STATE"]->isPressed())
 	{
-		states->push(new SettingsState(this->window, this->supportedKeys, this->states));
+		states->push(new SettingsState(this->stateData));
 	}
 
 
 	//New Game
 	if (buttons["EDITOR_STATE"]->isPressed())
 	{
-		states->push(new EditorState(this->window, this->supportedKeys, this->states));
+		states->push(new EditorState(this->stateData));
 	}
 
 	//Quit the game
