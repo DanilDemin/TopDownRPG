@@ -1,6 +1,51 @@
 #include "stdafx.h"
 #include "Gui.h"
 
+const float gui::p2pX(const float perc, const sf::VideoMode& vm)
+{
+	/*
+	* Convert a percentage value to pixells relative to the current resolution in the x-axis
+	*
+	*	@param            flaot perc            the percentage value
+	*	@param            sf::Videomode& vm            the current videomode of the windwow(resolition)
+		@return           float                 the calculated pixel value
+
+	*
+	*/
+	return std::floor(static_cast<float>(vm.width * (perc / 100.f)));
+}
+
+const float gui::p2pY(const float perc, const sf::VideoMode& vm)
+{
+	/*
+	* Convert a percentage value to pixells relative to the current resolution in the y-axis
+	*
+	*	@param            flaot perc            the percentage value
+		@param            sf::Videomode& vm     the current videomode of the windwow(resolition)
+
+		@return           float                 the calculated pixel value
+
+	*
+	*/
+
+	return std::floor(static_cast<float>(vm.height * (perc / 100.f)));
+}
+
+const unsigned gui::calcCharSize(const sf::VideoMode& vm, const unsigned modifier)
+{
+	/*
+	*  Calculate the charcter size for text using the current resolutoion and a constant
+	*
+	*	@param            sf::Videomode& vm     the current videomode of the windwow(resolition)
+	*	@param            unsighed modifier      Used to modifier the character size in a more custom way
+	* 
+		@return           unsigned               the calculated charater size value
+	*
+	*/
+	return static_cast<unsigned>((vm.width + vm.height) / modifier);
+}
+
+
 //Con/Des
 gui::Button::Button
 (
@@ -45,8 +90,7 @@ gui::Button::Button
 		this->shape.getPosition().x  + shape.getGlobalBounds().width / 2.f
 		- this->text.getGlobalBounds().width / 2.f,
 
-		this->shape.getPosition().y + shape.getGlobalBounds().height / 2.f
-		- this->text.getGlobalBounds().height / 2.f
+		this->shape.getPosition().y
 	);
 
 	this->textIdleColor = text_idle_color;
@@ -105,7 +149,7 @@ void gui::Button::setId(const short unsigned id)
 
 
 //Functions
-void gui::Button::update(const sf::Vector2f mousePos)
+void gui::Button::update(const sf::Vector2i& mousePosWindow)
 {
 	/*Update the booleans for hover and pressed*/
 
@@ -114,11 +158,10 @@ void gui::Button::update(const sf::Vector2f mousePos)
 
 	//Hover
 	
-	if (this->shape.getGlobalBounds().contains(mousePos))
+	if (this->shape.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow)))
 	{
 		this->buttonState = BTN_HOVER;
-
-
+		
 		//Pressed
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
@@ -176,7 +219,7 @@ gui::DropDownList::DropDownList(float x, float y, float width, float height,
 
 	this->activeEement = new Button(
 		x, y, width, height, &font,
-		list[default_index], 12,
+		list[default_index], 20,
 		sf::Color(255, 255, 255, 150),
 		sf::Color(255, 255, 255, 255),
 		sf::Color(20, 20, 20, 50),
@@ -191,7 +234,7 @@ gui::DropDownList::DropDownList(float x, float y, float width, float height,
 		this->list.push_back(
 			new Button(
 				x, y + ((i + 1) * height), width, height, &font,
-				list[i], 12,
+				list[i], 20,
 				sf::Color(255, 255, 255, 150),
 				sf::Color(255, 255, 255, 200),
 				sf::Color(20, 20, 20, 50),
@@ -207,6 +250,8 @@ gui::DropDownList::DropDownList(float x, float y, float width, float height,
 			)
 		);
 	}
+
+
 }
 
 gui::DropDownList::~DropDownList()
@@ -242,14 +287,14 @@ void gui::DropDownList::updateKeyTime(const float& dt)
 	{
 		this->keyTime += 10.f * dt;
 	}
-
+		
 }
 
 
-void gui::DropDownList::update(const sf::Vector2f mousePos, const float& dt)
+void gui::DropDownList::update(const sf::Vector2i mousePosWindow, const float& dt)
 {	
 	this->updateKeyTime(dt);
-	this->activeEement->update(mousePos);
+	this->activeEement->update(mousePosWindow);
 
 	//Show and hide the list
 	if (this->activeEement->isPressed() && this->getKeyTime())
@@ -268,7 +313,7 @@ void gui::DropDownList::update(const sf::Vector2f mousePos, const float& dt)
 	{
 		for (auto& i : this->list)
 		{
-			i->update(mousePos);
+			i->update(mousePosWindow);
 
 			if (i->isPressed() && this->getKeyTime())
 			{
@@ -292,3 +337,229 @@ void gui::DropDownList::render(sf::RenderTarget& target)
 		}
 	}
 }
+
+
+//TEXTURE_SELECTOR ================================================================================================
+
+gui::TextureSelector::TextureSelector(float x, float y, float width, float height, float gridSize,
+	const sf::Texture* texture_sheet, sf::Font& font, std::string text)
+	: keyTimeMax(1.f), keyTime(0.f)
+{
+
+
+	//There is kinda problems))))
+	this->gridSize = gridSize;
+	this->active = false;
+	this->hidden = false;
+	float offset = 100.f;
+
+	this->bounds.setSize(sf::Vector2f(width, height));
+	this->bounds.setPosition(x + offset, y);
+	this->bounds.setFillColor(sf::Color(50, 50, 50, 100));
+	this->bounds.setOutlineThickness(1.f);
+	this->bounds.setOutlineColor(sf::Color(255, 255, 255, 200));
+
+
+	this->sheet.setTexture(*texture_sheet);
+	this->sheet.setPosition(x + offset, y);
+
+
+
+	if (this->sheet.getGlobalBounds().width > this->bounds.getGlobalBounds().width)
+	{
+		this->sheet.setTextureRect(sf::IntRect(0, 0, static_cast<int>(this->bounds.getGlobalBounds().width), static_cast<int>(this->sheet.getGlobalBounds().height)));
+	}
+
+	if (this->sheet.getGlobalBounds().height > this->bounds.getGlobalBounds().height)
+	{
+		this->sheet.setTextureRect(sf::IntRect(0, 0, static_cast<int>(this->sheet.getGlobalBounds().width), static_cast<int>(this->bounds.getGlobalBounds().height)));
+	}
+
+	this->selector.setPosition(x + offset, y);
+	////Remove later
+	////By the way it works
+	//this->selector.setSize(sf::Vector2f(100.f, 100.f));
+
+	//This is corect
+	this->selector.setSize(sf::Vector2f(gridSize, gridSize));
+
+
+	this->selector.setFillColor(sf::Color::Transparent);
+	this->selector.setOutlineThickness(1.f);
+	this->selector.setOutlineColor(sf::Color::Red);
+
+	this->textureRect.width = static_cast<int>(gridSize);
+	this->textureRect.height = static_cast<int>(gridSize);
+
+
+	this->hide_btn = new gui::Button(x, y, 50.f, 50.f, &font,
+		text, 24,
+		sf::Color(255, 255, 255, 200),
+		sf::Color(255, 255, 255, 250),
+		sf::Color(255, 255, 255, 50),
+
+		sf::Color(70, 70, 70, 200),
+		sf::Color(150, 150, 150, 250),
+		sf::Color(20, 20, 20, 50));
+
+
+}
+
+gui::TextureSelector::~TextureSelector()
+{
+	delete this->hide_btn;
+}
+
+const bool& gui::TextureSelector::getActive() const
+{
+	return this->active;
+}
+
+const sf::IntRect& gui::TextureSelector::getTextureRect() const
+{
+	return this->textureRect;
+}
+
+const bool gui::TextureSelector::getKeytime()
+{
+	if (this->keyTime >= this->keyTimeMax)
+	{
+		this->keyTime = 0.f;
+		return true;
+	}
+	return false;
+}
+
+void gui::TextureSelector::updateKeyTime(const float& dt)
+{
+	if (this->keyTime < this->keyTimeMax)
+	{
+		this->keyTime += 10.f * dt;
+	}
+}
+
+//Functions
+void gui::TextureSelector::update(const sf::Vector2i& mousePosWindow, const float& dt)
+{	
+	this->updateKeyTime(dt);
+
+	this->hide_btn->update(mousePosWindow);
+
+	//Check the pressed of the button
+	if (this->hide_btn->isPressed() && this->getKeytime())
+	{
+		if(this->hidden){ this->hidden = false; }
+		else { this->hidden = true; }
+	}
+
+
+	if (!this->hidden)
+	{
+		this->active = false;
+
+		if (this->bounds.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow)))
+		{
+			this->active = true;
+
+			this->mousePosGrid.x = (mousePosWindow.x - static_cast<int>(this->bounds.getPosition().x)) / static_cast<unsigned>(this->gridSize);
+			this->mousePosGrid.y = (mousePosWindow.y - static_cast<int>(this->bounds.getPosition().y)) / static_cast<unsigned>(this->gridSize);
+
+			this->selector.setPosition(
+				this->bounds.getPosition().x + this->mousePosGrid.x * this->gridSize,
+				this->bounds.getPosition().y + this->mousePosGrid.y * this->gridSize
+			);
+
+			//Update texture rectangle
+			this->textureRect.left = static_cast<int>(this->selector.getPosition().x - this->bounds.getPosition().x);
+			this->textureRect.top = static_cast<int>(this->selector.getPosition().y - this->bounds.getPosition().y);
+		}
+	}
+}
+
+void gui::TextureSelector::render(sf::RenderTarget& target)
+{
+	
+
+
+	if (!this->hidden)
+	{
+		target.draw(this->bounds);
+		target.draw(this->sheet);
+		if (this->active) { target.draw(this->selector); }
+	}
+
+	this->hide_btn->render(target);
+}
+
+
+//ProgressBar ==================================================================================== Progressbar
+
+gui::ProgressBar::ProgressBar(float _x, float _y, float _width, float _height, int max_value,
+	sf::Color innner_color, unsigned character_size,
+	sf::VideoMode& vm, sf::Font* font)
+{
+	float width = gui::p2pX(_width, vm);
+	float height = gui::p2pY(_height, vm);
+	float x = gui::p2pX(_x, vm);
+	float y = gui::p2pY(_y, vm);
+
+	this->maxWidth = width;
+	this->maxValue = max_value;
+
+
+	//Back
+	this->back.setSize(sf::Vector2f(width, height));
+	this->back.setFillColor(sf::Color(50, 50, 50, 200));
+	this->back.setPosition(x, y);
+
+	//Inner
+	this->inner.setSize(sf::Vector2f(width, height));
+	this->inner.setFillColor(innner_color);
+	this->inner.setPosition(this->back.getPosition());
+
+	if (font)
+	{
+		this->text.setFont(*font);
+		this->text.setCharacterSize(gui::calcCharSize(vm, character_size));
+		this->text.setPosition(
+			this->inner.getPosition().x + gui::p2pX(0.5f, vm),
+			this->inner.getPosition().y + gui::p2pY(0.46f, vm)
+		);
+	}
+
+
+}
+
+ 
+
+gui::ProgressBar::~ProgressBar()
+{
+
+}
+
+//Functions
+void gui::ProgressBar::update(const int current_value)
+{
+	float percent = static_cast<float>(current_value) / static_cast<float>(this->maxValue);
+
+
+
+	this->inner.setSize(
+		sf::Vector2f
+		(
+			static_cast<float>(std::floor(this->maxWidth * percent)),
+			this->inner.getSize().y
+		)
+	);
+	this->barString = std::to_string(current_value) + " / " + std::to_string(this->maxValue);
+	this->text.setString(this->barString);
+}
+
+void gui::ProgressBar::render(sf::RenderTarget& target)
+{
+	target.draw(this->back);
+	target.draw(this->inner);
+	target.draw(this->text);
+}
+
+

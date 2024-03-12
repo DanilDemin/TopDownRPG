@@ -2,6 +2,8 @@
 
 #include "Gui.h"
 
+class Gui;
+
 class PauseMenu
 {
 private:
@@ -18,7 +20,7 @@ private:
 
 public:
 	//Con/Des
-	PauseMenu(sf::RenderWindow& window, sf::Font& font);
+	PauseMenu(sf::VideoMode vm, sf::Font& font);
 	virtual ~PauseMenu();
 
 
@@ -27,9 +29,12 @@ public:
 
 	//Functions
 	const bool isButtonPressed(const std::string key);
-	void addButton(const std::string key, float y,
+	void addButton(const std::string key, const float y,
+		const float width,
+		const float height,
+		const unsigned char_size,
 		const std::string text);
-	void update(const sf::Vector2f& mousePos);
+	void update(const sf::Vector2i& mousePosWindow);
 	void render(sf::RenderTarget& target);
 	
 

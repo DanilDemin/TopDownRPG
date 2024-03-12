@@ -7,21 +7,7 @@ void SettingsState::initVariables()
 	this->modes = sf::VideoMode::getFullscreenModes();
 }
 
-void SettingsState::initBackground()
-{
-	this->background.setSize(
-		sf::Vector2f
-		(
-			static_cast<float>(this->window->getSize().x),
-			static_cast<float>(this->window->getSize().y)
-		)
-	);
-	if (!this->backgroundTexture.loadFromFile("Resources/Images/Backgrounds/bg1.png"))
-	{
-		throw "ERROR::MAINMENUSTATE::FAILD_TO_DOWNLOAD_BACKGEOUNG_TEXTURE";
-	}
-	this->background.setTexture(&this->backgroundTexture);
-}
+ 
 
 void SettingsState::initFonts()
 {
@@ -54,8 +40,29 @@ void SettingsState::initKeybinds()
 
 void SettingsState::initGui()
 {
-	buttons["BACK"] = new gui::Button(750.f, 800.f, 250.f, 100.f, &font,
-		"Back", 50,
+
+	const sf::VideoMode& vm = this->stateData->gfxSettings->resolution;
+
+	//Background
+	this->background.setSize(
+		sf::Vector2f
+		(
+			static_cast<float>(vm.width),
+			static_cast<float>(vm.height)
+		)
+	);
+	if (!this->backgroundTexture.loadFromFile("Resources/Images/Backgrounds/bg1.png"))
+	{
+		throw "ERROR::MAINMENUSTATE::FAILD_TO_DOWNLOAD_BACKGEOUNG_TEXTURE";
+	}
+	this->background.setTexture(&this->backgroundTexture);
+
+	
+	//Buttons
+	buttons["BACK"] = new gui::Button(
+		gui::p2pX(67.8f, vm), gui::p2pY(83.4f, vm),
+		gui::p2pX(13.f, vm), gui::p2pY(9.3f, vm), &font,
+		"Back", gui::calcCharSize(vm),
 		sf::Color(70, 70, 70, 200),
 		sf::Color(250, 250, 250, 250),
 		sf::Color(20, 20, 20, 50),
@@ -65,8 +72,10 @@ void SettingsState::initGui()
 		sf::Color(20, 20, 20, 0));
 
 
-	buttons["APPLY"] = new gui::Button(550.f, 800.f, 250.f, 100.f, &font,
-		"Apply", 50,
+	buttons["APPLY"] = new gui::Button(
+		gui::p2pX(78.1f, vm), gui::p2pY(83.4f, vm),
+		gui::p2pX(13.f, vm), gui::p2pY(9.3f, vm), &font,
+		"Apply", gui::calcCharSize(vm),
 		sf::Color(70, 70, 70, 200),
 		sf::Color(250, 250, 250, 250),
 		sf::Color(20, 20, 20, 50),
@@ -75,6 +84,8 @@ void SettingsState::initGui()
 		sf::Color(150, 150, 150, 0),
 		sf::Color(20, 20, 20, 0));
 
+
+	//Modes
 	std::vector<std::string> modes_str;
 	
 	for (auto& i : this->modes)
@@ -82,22 +93,45 @@ void SettingsState::initGui()
 		modes_str.push_back(std::to_string(i.width) + 'x' + std::to_string(i.height));
 	}
 
-	this->dropDownLists["RESOLUTION"] = new gui::DropDownList(800, 450, 200, 50, font, modes_str.data(), modes_str.size());
+	//Drop dewon list
+	this->dropDownLists["RESOLUTION"] = new gui::DropDownList(
+		gui::p2pX(31.3f, vm), gui::p2pY(23.1f, vm), gui::p2pX(13.f, vm), gui::p2pY(4.7f, vm), font, modes_str.data(), static_cast<unsigned int>(modes_str.size()));
 
-}
-
-void SettingsState::initText()
-{
+	//Text
 	this->optionsText.setFont(this->font);
 
-	this->optionsText.setPosition(sf::Vector2f(100.f, 100.f));
-	this->optionsText.setCharacterSize(30);
+	this->optionsText.setPosition(sf::Vector2f(gui::p2pX(5.2f, vm), gui::p2pY(9.3f, vm)));
+	this->optionsText.setCharacterSize(gui::calcCharSize(vm, 70));
 	this->optionsText.setFillColor(sf::Color(255, 255, 255, 200));
-
-
 	this->optionsText.setString(
 		"Resolution  \nFullscreen \nVsync \nAntializing \n"
 	);
+
+}
+
+void SettingsState::resetGui()
+{
+	/*
+	Clears the GUI elemets and re-initialies the GUI
+
+	@return void 
+
+	*/
+	auto it = this->buttons.begin();
+	for (it = this->buttons.begin(); it != this->buttons.end(); ++it)
+	{
+		delete it->second;
+	}
+	this->buttons.clear();
+
+	auto it2 = this->dropDownLists.begin();
+	for (it2 = this->dropDownLists.begin(); it2 != this->dropDownLists.end(); ++it2)
+	{
+		delete it2->second;
+	}
+	this->dropDownLists.clear();
+
+	this->initGui();
 }
 
 
@@ -106,11 +140,9 @@ SettingsState::SettingsState(StateData* state_data)
 	: State(state_data)
 {
 	this->initVariables();
-	this->initBackground();
 	this->initFonts();
 	this->initKeybinds();
 	this->initGui();
-	this->initText();
 }
 
 SettingsState::~SettingsState()
@@ -143,7 +175,7 @@ void SettingsState::updateGui(const float& dt)
 	//Button
 	for (auto& it : this->buttons)
 	{
-		it.second->update(mousePosView);
+		it.second->update(this->mousPosWindow);
 	}
 
 	//Settings
@@ -165,6 +197,7 @@ void SettingsState::updateGui(const float& dt)
 			this->stateData->gfxSettings->title,
 			sf::Style::Default
 		);
+		this->resetGui();
 	}
 
 
@@ -172,7 +205,7 @@ void SettingsState::updateGui(const float& dt)
 	//Dropdown lists
 	for (auto& it : this->dropDownLists)
 	{
-		it.second->update(mousePosView, dt);
+		it.second->update(this->mousPosWindow, dt);
 	}
 
 	//Dropdown lists functioonality

@@ -5,13 +5,39 @@
 //Initializer functions
 void EditorState::initVariables()
 {
-
+	this->cameraSpeed = 500.f;
 }
 
-void EditorState::initBackground()
+void EditorState::initEditorStateData()
 {
+	this->editorStateData.view = &this->view;
+	this->editorStateData.font = &this->font;
+	this->editorStateData.keyTime = &this->keyTime;
+	this->editorStateData.keyTimeMax = &this->keyTimeMax;
+	this->editorStateData.keybinds = &this->keybinds;
+	this->editorStateData.mousePosGrid = &this->mousePosGrid;
+	this->editorStateData.mousePosView = &this->mousePosView;
+	this->editorStateData.mousPosScreen = &this->mousPosScreen;
+	this->editorStateData.mousPosWindow = &this->mousPosWindow;
+}
+
+void EditorState::initView()
+{
+	this->view.setSize(
+		sf::Vector2f(
+			static_cast<float>(this->stateData->gfxSettings->resolution.width),
+			static_cast<float>(this->stateData->gfxSettings->resolution.height)
+		)
+	);
+
+	this->view.setCenter(
+		static_cast<float>(this->stateData->gfxSettings->resolution.width) / 2.f,
+		static_cast<float>(this->stateData->gfxSettings->resolution.height) / 2.f
+	);
+
 
 }
+
 
 void EditorState::initFonts()
 {
@@ -20,6 +46,7 @@ void EditorState::initFonts()
 		throw("ERROR::EDDITORSTATE::COULD NOT LOAD FONT");
 	}
 }
+
 
 void EditorState::initKeybinds()
 {
@@ -44,42 +71,53 @@ void EditorState::initKeybinds()
 
 void EditorState::initPauseMenu()
 {
-	this->pmenu = new PauseMenu(*this->window, this->font);
-	this->pmenu->addButton("QUIT", 900.f, "Quit");
+	const sf::VideoMode& vm = this->stateData->gfxSettings->resolution;
+
+	this->pmenu = new PauseMenu(this->stateData->gfxSettings->resolution, this->font);
+
+	this->pmenu->addButton("QUIT", gui::p2pY(83.3f, vm), gui::p2pX(13.f, vm), gui::p2pY(6.f, vm), gui::calcCharSize(vm), "Quit");
+	this->pmenu->addButton("SAVE", gui::p2pY(46.3f, vm), gui::p2pX(13.f, vm), gui::p2pY(6.f, vm), gui::calcCharSize(vm), "Save");
+	this->pmenu->addButton("LOAD", gui::p2pY(37.f, vm), gui::p2pX(13.f, vm), gui::p2pY(6.f, vm), gui::calcCharSize(vm), "Load");
 }
 
 void EditorState::initButtons()
 {
-	
+	 
 }
 
 void EditorState::initGui()
 {	
-	this->selectorRect.setSize(sf::Vector2f(this->stateData->gridSize,
-		this->stateData->gridSize));
-	this->selectorRect.setFillColor(sf::Color::Transparent);
-	this->selectorRect.setOutlineThickness(1.f);
-	this->selectorRect.setOutlineColor(sf::Color::Green);
-
 
 }
 
 void EditorState::initTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10);
+	this->tileMap = new TileMap(static_cast<int>(this->stateData->gridSize), 100, 100, "Resources/Images/Tiles/texturesheet2.png");
+}
+
+void EditorState::initModes()
+{
+	this->modes.push_back(new DefaultEditorMode(this->stateData, this->tileMap, &this->editorStateData));
+	this->modes.push_back(new EnemyEditorMode(this->stateData, this->tileMap, &this->editorStateData));
+
+
+	this->activeMode = EditorModes::DEFAULT_EDITOR_MODE;
 }
 
 EditorState::EditorState(StateData* state_data)
 	: State(state_data)
 {
 	this->initVariables();
-	this->initBackground();
+	this->initEditorStateData();
+	this->initView();
 	this->initFonts();
 	this->initKeybinds();
 	this->initButtons();
-	this->initGui();
 	this->initPauseMenu();
 	this->initTileMap();
+	this->initGui();
+
+	this->initModes();	
 }
 
 EditorState::~EditorState()
@@ -93,11 +131,22 @@ EditorState::~EditorState()
 	delete this->pmenu;
 
 	delete this->tileMap;
+
+	
+
+	for (size_t i = 0; i < this->modes.size(); i++)
+	{
+		delete this->modes[i];
+	}
+
+
+
+
 }
 
 //Functions
 void EditorState::updateInput(const float& dt)
-{	
+{
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CLOSE"))) && this->getKeytime())
 	{
 		if (!this->paused)
@@ -112,12 +161,51 @@ void EditorState::updateInput(const float& dt)
 }
 
 void EditorState::updateEditorInput(const float& dt)
-{	
-	//Add a tile to the tileMap
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->getKeytime())
+{
+	//Move view
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_CAMERA_UP"))))
 	{
-		this->tileMap->addTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
+		this->view.move(0.f, -this->cameraSpeed * dt);
 	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_CAMERA_DOWN"))))
+	{
+		this->view.move(0.f, this->cameraSpeed * dt);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_CAMERA_RIGHT"))))
+	{
+		this->view.move(this->cameraSpeed * dt, 0.f);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_CAMERA_LEFT"))))
+	{
+		this->view.move(-this->cameraSpeed * dt, 0.f);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MODE_UP"))))
+	{
+		if (this->activeMode < this->modes.size() - 1)
+		{
+			this->activeMode++;
+		}
+		else
+		{
+			std::cout << "ERROR::EDITORSTATE::CANNOT CNAGE MODE UP!" << "\n";
+		}
+
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MODE_DOWN"))))
+	{
+		if (this->activeMode > 0)
+		{
+			this->activeMode--;
+		}
+		else
+		{
+			std::cout << "ERROR::EDITORSTATE::CANNOT CNAGE MODE DOWN!" << "\n";
+		}
+	}
+
+
 }
 
 void EditorState::updateButtons()
@@ -125,17 +213,14 @@ void EditorState::updateButtons()
 	//updates all the buttons in the state and	handles their funcionality
 	for (auto& it : buttons)
 	{
-		it.second->update(mousePosView);
+		it.second->update(this->mousPosWindow);
 	}
 
 }
 
-void EditorState::updateGui()
+void EditorState::updateGui(const float& dt)
 {
-	this->selectorRect.setPosition(
-		this->mousePosGrid.x * this->stateData->gridSize,
-		this->mousePosGrid.y * this->stateData->gridSize
-	);
+
 }
 
 void EditorState::updatePauseMenuButtons()
@@ -144,27 +229,46 @@ void EditorState::updatePauseMenuButtons()
 	{
 		this->endState();
 	}
+
+	// we be able to make .slmp extension
+	if (this->pmenu->isButtonPressed("SAVE"))
+	{
+		this->tileMap->saveToFile("text.txt");
+	}
+
+	if (this->pmenu->isButtonPressed("LOAD"))
+	{
+		this->tileMap->loadFromFile("text.txt");
+	}
+}
+
+void EditorState::updateModes(const float& dt)
+{
+	this->modes[this->activeMode]->update(dt);
 }
 
 void EditorState::update(const float& dt)
 {
-	this->updateMousePosition();
+	this->updateMousePosition(&this->view);
 	this->updateKeytime(dt);
 	this->updateInput(dt);
 
 	if (!this->paused) // UNpaused
 	{	
-		this->updateGui();
+		this->updateGui(dt);
 		this->updateButtons();
 		this->updateEditorInput(dt);
+		this->updateModes(dt);
+	
 	}
 	else //Paused
 	{
-		this->pmenu->update(this->mousePosView);
+		this->pmenu->update(mousPosWindow);
 		this->updatePauseMenuButtons();
 	}
 
-	
+
+
 
 }
 
@@ -178,7 +282,12 @@ void EditorState::renderButtons(sf::RenderTarget& target)
 
 void EditorState::renderGui(sf::RenderTarget& target)
 {
-	target.draw(this->selectorRect);
+	
+}
+
+void EditorState::renderModes(sf::RenderTarget& target)
+{
+	this->modes[this->activeMode]->render(target);
 }
 
 void EditorState::render(sf::RenderTarget* target)
@@ -189,28 +298,26 @@ void EditorState::render(sf::RenderTarget* target)
 		target = this->window;
 	}
 
+	target->setView(this->view);
+
+	this->tileMap->render(*target, this->mousePosGrid, true);
+	this->tileMap->renderDeferred(*target);
+
+
+	target->setView(this->window->getDefaultView());
+
+
 	this->renderButtons(*target);
 	this->renderGui(*target);
-
-	this->tileMap->render(*target);
+	this->renderModes(*target);
 
 
 	if (this->paused)//Paused menu render
 	{
+		target->setView(this->window->getDefaultView());
 		this->pmenu->render(*target);
 	}
 
 
 	//Remove later!!!!
-	sf::Text mouseText;
-	mouseText.setPosition(this->mousePosView.x, this->mousePosView.y - 50);
-	mouseText.setFont(this->font);
-	mouseText.setCharacterSize(12);
-	std::stringstream ss;
-	ss << this->mousePosView.x << " " << mousePosView.y << " \n";
-	mouseText.setString(ss.str());
-
-
-	target->draw(mouseText);
-
 }

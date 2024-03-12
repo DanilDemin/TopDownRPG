@@ -39,6 +39,10 @@ protected:
 	float keyTimeMax;
 	float gridSize;
 
+	sf::Vector2i mousPosScreen;
+	sf::Vector2i mousPosWindow;
+	sf::Vector2f mousePosView;
+	sf::Vector2i mousePosGrid;
 
 
 	//Resources
@@ -46,13 +50,6 @@ protected:
 
 	//Functions
 	virtual void initKeybinds() = 0;
-	
-
-	sf::Vector2i mousPosScreen;
-	sf::Vector2i mousPosWindow;
-	sf::Vector2f mousePosView;
-	sf::Vector2u mousePosGrid;
-
 
 public:
 	State(StateData* state_data);
@@ -68,11 +65,10 @@ public:
 	void pauseState();
 	void unpauseState();
 
-	virtual void updateMousePosition();
+	virtual void updateMousePosition(sf::View* view = NULL);
 	virtual void updateKeytime(const float& dt);
 	virtual void updateInput(const float& dt) = 0;
 	virtual void update(const float& dt) = 0;
 	virtual void render(sf::RenderTarget* target = NULL) = 0;
-
 };
 
