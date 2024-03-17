@@ -64,6 +64,18 @@
     <Filter Include="AI\Opitons">
       <UniqueIdentifier>{11a574ad-a8cd-4f68-be95-3b32e77136a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Entities\Heroes">
+      <UniqueIdentifier>{76d811d3-05bc-4f40-a05c-b97986998935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Enemies\Skeleton">
+      <UniqueIdentifier>{c9416436-f530-44b5-abcb-716b8b028ed7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Enemies\Orc">
+      <UniqueIdentifier>{c6037003-d13c-493d-b9ff-ba6668bba82c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Enemies\Classes">
+      <UniqueIdentifier>{bb9bf2f9-df01-4e03-b103-9cb179262e67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -111,9 +123,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
     <ClCompile Include="GraphicsSettings.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
@@ -159,9 +168,6 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Entities\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Skeleton.cpp">
-      <Filter>Entities\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="RegularTile.cpp">
       <Filter>Tile</Filter>
     </ClCompile>
@@ -197,6 +203,51 @@
     </ClCompile>
     <ClCompile Include="VectorMath.cpp">
       <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Entities\Enemies\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Warrior.cpp">
+      <Filter>Entities\Enemies\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Mage.cpp">
+      <Filter>Entities\Enemies\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Rogue.cpp">
+      <Filter>Entities\Enemies\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonWarrior.cpp">
+      <Filter>Entities\Enemies\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonMage.cpp">
+      <Filter>Entities\Enemies\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonRogue.cpp">
+      <Filter>Entities\Enemies\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Orc.cpp">
+      <Filter>Entities\Enemies\Orc</Filter>
+    </ClCompile>
+    <ClCompile Include="OrcWarrior.cpp">
+      <Filter>Entities\Enemies\Orc</Filter>
+    </ClCompile>
+    <ClCompile Include="OrcMage.cpp">
+      <Filter>Entities\Enemies\Orc</Filter>
+    </ClCompile>
+    <ClCompile Include="OrcRogue.cpp">
+      <Filter>Entities\Enemies\Orc</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Entities\Heroes</Filter>
+    </ClCompile>
+    <ClCompile Include="Knight.cpp">
+      <Filter>Entities\Heroes</Filter>
+    </ClCompile>
+    <ClCompile Include="Wizzard.cpp">
+      <Filter>Entities\Heroes</Filter>
+    </ClCompile>
+    <ClCompile Include="Thief.cpp">
+      <Filter>Entities\Heroes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -258,9 +309,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicsSettings.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
@@ -309,9 +357,6 @@
     <ClInclude Include="Enemy.h">
       <Filter>Entities\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Skeleton.h">
-      <Filter>Entities\Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="EnemiesInclude.h">
       <Filter>Entities\Enemies</Filter>
     </ClInclude>
@@ -353,6 +398,51 @@
     </ClInclude>
     <ClInclude Include="VectorMath.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>Entities\Enemies\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Warrior.h">
+      <Filter>Entities\Enemies\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Mage.h">
+      <Filter>Entities\Enemies\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Rogue.h">
+      <Filter>Entities\Enemies\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonWarrior.h">
+      <Filter>Entities\Enemies\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonMage.h">
+      <Filter>Entities\Enemies\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonRogue.h">
+      <Filter>Entities\Enemies\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Orc.h">
+      <Filter>Entities\Enemies\Orc</Filter>
+    </ClInclude>
+    <ClInclude Include="OrcWarrior.h">
+      <Filter>Entities\Enemies\Orc</Filter>
+    </ClInclude>
+    <ClInclude Include="OrcMage.h">
+      <Filter>Entities\Enemies\Orc</Filter>
+    </ClInclude>
+    <ClInclude Include="OrcRogue.h">
+      <Filter>Entities\Enemies\Orc</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Entities\Heroes</Filter>
+    </ClInclude>
+    <ClInclude Include="Knight.h">
+      <Filter>Entities\Heroes</Filter>
+    </ClInclude>
+    <ClInclude Include="Wizzard.h">
+      <Filter>Entities\Heroes</Filter>
+    </ClInclude>
+    <ClInclude Include="Thief.h">
+      <Filter>Entities\Heroes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

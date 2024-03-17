@@ -4,7 +4,7 @@
 
 
 class Skeleton :
-    public Enemy
+    virtual public Enemy
 {
 private:
     //Variables

@@ -74,12 +74,21 @@ void GameState::initFonts()
 
 
 void GameState::initTextures()
-{	 
-	if (!this->textures["Player_Spritelist"].loadFromFile(
+{	
+
+
+	if (!this->textures["Player_Knight_Spritelist"].loadFromFile(
 		"Resources/Images/Sprites/Player/Knight/KhightSheet.png"))
 	{
 		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_PLAYER_TEXTURE";
 	}
+
+	if (!this->textures["Player_Wizzard_Spritelist"].loadFromFile(
+		"Resources/Images/Sprites/Player/Wizzard/WizzardSheet.png"))
+	{
+		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_PLAYER_TEXTURE";
+	}
+	 
 
 
 	if (!this->textures["Skeleton_Spritelist"].loadFromFile(
@@ -106,7 +115,7 @@ void GameState::initKeyTime()
 
 void GameState::initPlayers()
 {
-	this->player = new Player(200, 200, this->textures["Player_Spritelist"]);
+	this->player = new Player(200, 200, this->textures["Player_Knight_Spritelist"]);
 }
 
 void GameState::initPlayerGUI()
