@@ -98,12 +98,22 @@ void GameState::initTextures()
 	}
 	 
 
-	//Skeleton
+	//Skeleton Base
 	if (!this->textures["Skeleton_Spritelist"].loadFromFile(
-		"Resources/Images/Sprites/Enemy/SkeletonSheet.png"))
+		"Resources/Images/Sprites/Enemy/Skeleton/SkeletonBase/SkeletonSheet.png"))
 	{
 		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_ENEMY_TEXTURE";
 	}
+
+
+	//Skeleton Base
+	if (!this->textures["Skeleton_Spritelist"].loadFromFile(
+		"Resources/Images/Sprites/Enemy/Skeleton/SkeletonMage/SkeletonMageSheet.png"))
+	{
+		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_ENEMY_TEXTURE";
+	}
+
+
 
 }
 
@@ -123,6 +133,7 @@ void GameState::initKeyTime()
 
 void GameState::initPlayers()
 {
+
 	CharacterCreator* creator = new WizzardCreator(this->textures);
 	this->player = creator->CreateCharacter();
 
