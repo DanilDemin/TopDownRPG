@@ -11,6 +11,11 @@
 #include "TextTagSystem.h"
 
 
+#include "KnightCreator.h"
+#include "ThiefCreator.h"
+#include "WizzardCreator.h"
+
+
 class GameState 
 	: public State
 {
@@ -27,6 +32,7 @@ private:
 	sf::Clock keyTimer;
 	float keyTimeMax;
 
+	CharacterCreator* creator;
 	Player* player;
 	PlayerGUI* playerGUI;
 

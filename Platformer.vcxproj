@@ -144,6 +144,7 @@
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AttributeComponent.cpp" />
     <ClCompile Include="Bow.cpp" />
+    <ClCompile Include="CharacterCreator.cpp" />
     <ClCompile Include="CharacterTab.cpp" />
     <ClCompile Include="DefaultEditorMode.cpp" />
     <ClCompile Include="EditorMode.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Knight.cpp" />
+    <ClCompile Include="KnightCreator.cpp" />
     <ClCompile Include="Mage.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
@@ -177,6 +179,7 @@
     <ClCompile Include="RangedWeapon.cpp" />
     <ClCompile Include="RegularTile.cpp" />
     <ClCompile Include="Rogue.cpp" />
+    <ClCompile Include="ThiefCreator.cpp" />
     <ClCompile Include="SettingsState.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="SkeletonMage.cpp" />
@@ -198,6 +201,7 @@
     <ClCompile Include="Warrior.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="Wizzard.cpp" />
+    <ClCompile Include="WizzardCreator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment_shager.frag" />
@@ -220,6 +224,7 @@
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AttributeComponent.h" />
     <ClInclude Include="Bow.h" />
+    <ClInclude Include="CharacterCreator.h" />
     <ClInclude Include="CharacterTab.h" />
     <ClInclude Include="DefaultEditorMode.h" />
     <ClInclude Include="EditorMode.h" />
@@ -240,6 +245,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="Knight.h" />
+    <ClInclude Include="KnightCreator.h" />
     <ClInclude Include="Mage.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="MeleeWeapon.h" />
@@ -255,6 +261,7 @@
     <ClInclude Include="RangedWeapon.h" />
     <ClInclude Include="RegularTile.h" />
     <ClInclude Include="Rogue.h" />
+    <ClInclude Include="ThiefCreator.h" />
     <ClInclude Include="SettingsState.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="SkeletonMage.h" />
@@ -273,6 +280,7 @@
     <ClInclude Include="Warrior.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="Wizzard.h" />
+    <ClInclude Include="WizzardCreator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -76,21 +76,29 @@ void GameState::initFonts()
 void GameState::initTextures()
 {	
 
-
+	//Khight
 	if (!this->textures["Player_Knight_Spritelist"].loadFromFile(
 		"Resources/Images/Sprites/Player/Knight/KhightSheet.png"))
 	{
 		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_PLAYER_TEXTURE";
 	}
 
+	//Wizzard
 	if (!this->textures["Player_Wizzard_Spritelist"].loadFromFile(
-		"Resources/Images/Sprites/Player/Wizzard/WizzardSheet.png"))
+		"Resources/Images/Sprites/Player/Wizzard/WizzardSheet1.png"))
+	{
+		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_PLAYER_TEXTURE";
+	}
+
+	//Thief
+	if (!this->textures["Player_Thief_Spritelist"].loadFromFile(
+		"Resources/Images/Sprites/Player/Thief/ThiefSheet1.png"))
 	{
 		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_PLAYER_TEXTURE";
 	}
 	 
 
-
+	//Skeleton
 	if (!this->textures["Skeleton_Spritelist"].loadFromFile(
 		"Resources/Images/Sprites/Enemy/SkeletonSheet.png"))
 	{
@@ -115,7 +123,10 @@ void GameState::initKeyTime()
 
 void GameState::initPlayers()
 {
-	this->player = new Player(200, 200, this->textures["Player_Knight_Spritelist"]);
+	CharacterCreator* creator = new WizzardCreator(this->textures);
+	this->player = creator->CreateCharacter();
+
+
 }
 
 void GameState::initPlayerGUI()
@@ -161,6 +172,9 @@ GameState::~GameState()
 {
 	delete this->pmenu;
 	delete this->player;
+
+	delete this->creator;
+
 	delete this->playerGUI;
 	delete this->tileMap;
 	delete this->enemySystem;

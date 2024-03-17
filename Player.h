@@ -11,10 +11,14 @@ private:
     //Variables
     Inventory* inventory;
 
+
+
     bool attacking;
     float scale;
     bool initAttack;
     bool attaking;
+
+
     Weapon* weapon;
 
     sf::Clock damageTimer;
@@ -23,9 +27,9 @@ private:
 
 
     //Initializer function
-    void initVariavles();
-    void initComponetnt();
-    void initAnimation();
+    void initVariables();
+    void initComponent();
+    /*void initAnimation();*/
     void initInventory();
     
 public:

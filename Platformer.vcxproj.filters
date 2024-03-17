@@ -76,6 +76,18 @@
     <Filter Include="Entities\Enemies\Classes">
       <UniqueIdentifier>{bb9bf2f9-df01-4e03-b103-9cb179262e67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Factories">
+      <UniqueIdentifier>{b66a117e-01e9-44ea-a0f4-cde6ffc9741a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Factories\FactoryOfCharacter">
+      <UniqueIdentifier>{301c9b78-5a06-40b1-a923-bf62ba57899f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Factories\FactoryOfWeapon">
+      <UniqueIdentifier>{bfd7d468-bab6-4fce-8bbd-08d4d3bd2865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Factories\FactoryOfCharacter\Player">
+      <UniqueIdentifier>{e7f36f49-d497-4633-9617-4b4b79046c9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -119,9 +131,6 @@
     </ClCompile>
     <ClCompile Include="TileMap.cpp">
       <Filter>Map</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsSettings.cpp">
       <Filter>Resource Files</Filter>
@@ -248,6 +257,21 @@
     </ClCompile>
     <ClCompile Include="Thief.cpp">
       <Filter>Entities\Heroes</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Factories\FactoryOfCharacter</Filter>
+    </ClCompile>
+    <ClCompile Include="KnightCreator.cpp">
+      <Filter>Factories\FactoryOfCharacter\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="ThiefCreator.cpp">
+      <Filter>Factories\FactoryOfCharacter\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="WizzardCreator.cpp">
+      <Filter>Factories\FactoryOfCharacter\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterCreator.cpp">
+      <Filter>Factories\FactoryOfCharacter\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -443,6 +467,18 @@
     </ClInclude>
     <ClInclude Include="Thief.h">
       <Filter>Entities\Heroes</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterCreator.h">
+      <Filter>Factories\FactoryOfCharacter\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ThiefCreator.h">
+      <Filter>Factories\FactoryOfCharacter\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="WizzardCreator.h">
+      <Filter>Factories\FactoryOfCharacter\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="KnightCreator.h">
+      <Filter>Factories\FactoryOfCharacter\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

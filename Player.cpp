@@ -2,7 +2,7 @@
 #include "Player.h"
 
 //Initializer function
-void Player::initVariavles()
+void Player::initVariables()
 {
 	/*this->attacking = false;
 	this->scale = 6.f;
@@ -14,16 +14,16 @@ void Player::initVariavles()
 	this->damageTimer.restart();
 }
 
-void Player::initComponetnt()
+void Player::initComponent()
 {
 	
 }
 
-void Player::initAnimation()
-{
-	this->animationComponent->addAnimation("IDLE", 10.f, 0, 0, 3, 0, 32, 32);
-	this->animationComponent->addAnimation("WALK", 5.f, 0, 1, 5, 1, 64, 32);
-}
+//void Player::initAnimation()
+//{
+//	this->animationComponent->addAnimation("IDLE", 10.f, 0, 0, 3, 0, 32, 32);
+//	this->animationComponent->addAnimation("WALK", 5.f, 0, 1, 5, 1, 64, 32);
+//}
 
 void Player::initInventory()
 {
@@ -40,7 +40,7 @@ Player::Player(float x, float y, sf::Texture& texture_sheet)
 	, damageTimerMax(500)
 
 {	
-	this->initVariavles();
+	this->initVariables();
 	
 	this->setTexture(texture_sheet);
 	 
@@ -57,7 +57,7 @@ Player::Player(float x, float y, sf::Texture& texture_sheet)
 	this->createAttributeComponent(1);
 	this->createSkillComponent();
 	this->setPosition(x, y);
-	this->initAnimation();
+	/*this->initAnimation();*/
 
 	this->initInventory();
 }
