@@ -16,6 +16,11 @@ void Skeleton::initAnimation()
 	this->animationComponent->addAnimation("WALK", 5.f, 0, 1, 5, 1, 64, 32);
 }
 
+void Skeleton::initAI()
+{
+	
+}
+
 void Skeleton::initGUI()
 {
 	this->hpBar.setFillColor(sf::Color::Red);
@@ -24,7 +29,7 @@ void Skeleton::initGUI()
 }
 
 //Con/Des
-Skeleton::Skeleton(float x, float y, sf::Texture& texture_sheet, EnemySpawnerTile& enemy_spawner_tile)
+Skeleton::Skeleton(float x, float y, sf::Texture& texture_sheet, EnemySpawnerTile& enemy_spawner_tile, Entity& player)
 	: Enemy(enemy_spawner_tile)
 {
 	
@@ -50,11 +55,13 @@ Skeleton::Skeleton(float x, float y, sf::Texture& texture_sheet, EnemySpawnerTil
 	this->setPosition(x, y);
 	this->initAnimation();
 
+	this->follow = new AIFollow(*this, player);
+
 }
 
 Skeleton::~Skeleton()
 {
-
+	delete this->follow;
 }
 
 void Skeleton::updateAnimation(const float& dt)
@@ -90,11 +97,24 @@ void Skeleton::updateAnimation(const float& dt)
 		this->animationComponent->play("WALK", dt, this->movementComponent->getVelocity().x,
 			this->movementComponent->getMaxVelocity());
 	}
+
+	if (this->gamageTimer.getElapsedTime().asMilliseconds() <= this->damageTimerMax)
+	{
+		this->sprite.setColor(sf::Color::Red);
+	}
+	else
+	{
+		this->sprite.setColor(sf::Color::White);
+	}
+
 }
 
 
-void Skeleton::update(const float& dt, sf::Vector2f& mouse_pos_view)
+void Skeleton::update(const float& dt, sf::Vector2f& mouse_pos_view, const sf::View& view)
 {
+	Enemy::update(dt, mouse_pos_view, view);
+
+
 	this->movementComponent->update(dt);
 
 	//GUI
@@ -106,6 +126,8 @@ void Skeleton::update(const float& dt, sf::Vector2f& mouse_pos_view)
 	/*this->updateAttack();*/
 	this->updateAnimation(dt);
 	this->hitboxComponent->update();
+
+	this->follow->update(dt);
 }
 
 void Skeleton::render(sf::RenderTarget& target, const bool show_hitbox)

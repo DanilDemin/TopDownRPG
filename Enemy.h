@@ -9,12 +9,18 @@ class EnemySpawnerTile;
 class Enemy :
     public Entity
 {
-private:
+protected:
     //Variables
    /*float scale;*/
 
     EnemySpawnerTile& enemySpawnerTile;
     unsigned gainExp;
+    sf::Clock gamageTimer;
+    sf::Int32 damageTimerMax;
+
+    sf::Clock despawnTimer;
+    sf::Int32 despawnTimerMax;
+
 
     
     //Initializer functions
@@ -32,7 +38,12 @@ public:
     const unsigned& getGainExp() const;
 
     EnemySpawnerTile& getEnemySpawnerTile();
+    const bool getDamageTimeDone() const;
+    const bool getRespawnTimerDone() const;
 
+
+    //Nodifires
+    void resetDamageTimer();
 
 
     //Functions
@@ -41,7 +52,7 @@ public:
     virtual const bool isDead() const;
     virtual void loseHp(const int hp);
     virtual void updateAnimation(const float& dt) = 0;
-    virtual void update(const float& dt, sf::Vector2f& mouse_pos_view) = 0;
+    virtual void update(const float& dt, sf::Vector2f& mouse_pos_view, const sf::View& view) = 0;
     virtual void render(sf::RenderTarget& target, const bool show_hitbox = false) = 0;
 };
 

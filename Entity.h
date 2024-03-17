@@ -43,6 +43,8 @@ public:
 	void createAnimationComponent(sf::Texture& texture_sheet);
 	void createAttributeComponent(const unsigned level);
 	void createSkillComponent();
+	void createAIComponent();
+
 
 	//Accessors
 	virtual const sf::Vector2f& getPosition() const;
@@ -70,7 +72,7 @@ public:
 	virtual const float getDistance(const Entity& entity) const;
 	
 
-	virtual void update(const float& dt, sf::Vector2f& mouse_pos_view) = 0;
+	virtual void update(const float& dt, sf::Vector2f& mouse_pos_view, const sf::View& view) = 0;
 	virtual void render(sf::RenderTarget& target, const bool show_hitbox = false) = 0;
 };
 

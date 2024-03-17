@@ -13,7 +13,15 @@ private:
 
     bool attacking;
     float scale;
-    Sword* sword;
+    bool initAttack;
+    bool attaking;
+    Weapon* weapon;
+
+    sf::Clock damageTimer;
+    sf::Int32 damageTimerMax;
+
+
+
     //Initializer function
     void initVariavles();
     void initComponetnt();
@@ -28,7 +36,17 @@ public:
     //Accessors
     AttributeComponent* getAttributecomponent();
     Weapon* getWeapon() const;
-    /*const sf::Vector2f& getCenter() const override;*/
+    const std::string toStringCharactertab() const;
+    const bool& getInitAtack() const;
+    const bool getDamageTimer();
+
+    const unsigned getDamage() const;
+
+
+
+    //Modifires
+    void setInitAtack(const bool init_attack);
+
 
 
     //Functions
@@ -40,7 +58,7 @@ public:
 
      
     void updateAnimation(const float& dt);
-    void update(const float& dt, sf::Vector2f& mouse_pos_view);
+    void update(const float& dt, sf::Vector2f& mouse_pos_view, const sf::View& view);
 
     void render(sf::RenderTarget& target, const bool show_hitbox = false);
 };

@@ -7,7 +7,7 @@ private:
 	sf::RectangleShape back;
 	sf::Text infoText;
 	
-
+	void initText();
 
 public:
 	//Con / Des

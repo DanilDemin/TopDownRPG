@@ -25,6 +25,8 @@ Weapon::Weapon(unsigned level, unsigned value, std::string texture_file)
 	this->weapon_sprite.setTexture(this->weapon_texture);
 }
 
+
+//WRONG STYLE :: CONSTRUCTOR WITH INIT LIST!!!!!!!!!!!!!!!!!!1 rEMOVE THAT!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 
 Weapon::Weapon(unsigned level, unsigned damageMin, unsigned damageMax,
 	unsigned range, unsigned value, std::string texture_file)
 	: Item(level,value)

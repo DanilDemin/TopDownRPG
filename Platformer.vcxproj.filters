@@ -58,6 +58,12 @@
     <Filter Include="GUI\PlayerGUITabs">
       <UniqueIdentifier>{3e17e2b8-baad-4b6e-98bf-3f859051f54a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{a2a5850f-9c0b-4884-af92-61ce96ddeebc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI\Opitons">
+      <UniqueIdentifier>{11a574ad-a8cd-4f68-be95-3b32e77136a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -179,6 +185,18 @@
     </ClCompile>
     <ClCompile Include="Tab.cpp">
       <Filter>GUI\PlayerGUITabs</Filter>
+    </ClCompile>
+    <ClCompile Include="AIOption.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="AIFollow.cpp">
+      <Filter>AI\Opitons</Filter>
+    </ClCompile>
+    <ClCompile Include="AIComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="VectorMath.cpp">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -323,6 +341,18 @@
     </ClInclude>
     <ClInclude Include="Tab.h">
       <Filter>GUI\PlayerGUITabs</Filter>
+    </ClInclude>
+    <ClInclude Include="AIOption.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AIFollow.h">
+      <Filter>AI\Opitons</Filter>
+    </ClInclude>
+    <ClInclude Include="AIComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorMath.h">
+      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

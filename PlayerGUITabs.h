@@ -1,11 +1,17 @@
 #pragma once
 #include "CharacterTab.h"
 
+enum PLAYER_TABS
+{
+	CHARACTER_TAB = 0,
+	INVENTORY_TAB
+};
 
 class PlayerGUITabs
 {
 private:
-	CharacterTab characterTab;
+	std::vector<Tab*> tabs;
+
 
 	//Core
 	sf::VideoMode& vm;
@@ -16,6 +22,7 @@ private:
 	float keyTimeMax;
 
 	//Private Functions
+	void initTabs();
 	void initKeyTime();
 
 public:
@@ -26,7 +33,7 @@ public:
 	const bool getKeyTimre();
 	const bool tabsOpen();
 
-	void toggleCharacterTab();
+	void toggleTab(const int tab_index);
 
 	//Funtions
 	void update();

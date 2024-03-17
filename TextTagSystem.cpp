@@ -17,9 +17,9 @@ void TextTagSystem::initFonts(std::string font_file)
 
 void TextTagSystem::initTagtemplates()
 {
-	this->tagTemplates[TAGTYPES::DEFAULT_TAG] = new TextTag(this->font, "HUY", 800.f, 800.f, 0.f, -1.f, sf::Color::White, 60, 100.f, 300.f);
-	this->tagTemplates[TAGTYPES::NEGATIVE_TAG] = new TextTag(this->font, "HUY", 800.f, 800.f, 0.f, 1.f, sf::Color::Red, 60, 100.f, 350.f);
-	this->tagTemplates[TAGTYPES::EXPERIENCE_TAG] = new TextTag(this->font, "HUY", 800.f, 800.f, 0.f, -1.f, sf::Color::Cyan, 60, 150.f, 350.f);
+	this->tagTemplates[TAGTYPES::DEFAULT_TAG] = new TextTag(this->font, "HUY", 800.f, 800.f, 0.f, -1.f, sf::Color::White, 60, 100.f, true, 300.f, 500.f, 2);
+	this->tagTemplates[TAGTYPES::NEGATIVE_TAG] = new TextTag(this->font, "HUY", 800.f, 800.f, 0.f, 1.f, sf::Color::Red, 60, 100.f, true, 350.f, 500.f, 2);
+	this->tagTemplates[TAGTYPES::EXPERIENCE_TAG] = new TextTag(this->font, "HUY", 800.f, 800.f, 0.f, -1.f, sf::Color::Cyan, 60, 150.f, true, 350.f, 500, 2);
 }
 
 //Con /Des

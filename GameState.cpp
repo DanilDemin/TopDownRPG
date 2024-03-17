@@ -76,7 +76,7 @@ void GameState::initFonts()
 void GameState::initTextures()
 {	 
 	if (!this->textures["Player_Spritelist"].loadFromFile(
-		"Resources/Images/Sprites/Player/PlayerSheet1.png"))
+		"Resources/Images/Sprites/Player/Knight/KhightSheet.png"))
 	{
 		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_PLAYER_TEXTURE";
 	}
@@ -107,7 +107,6 @@ void GameState::initKeyTime()
 void GameState::initPlayers()
 {
 	this->player = new Player(200, 200, this->textures["Player_Spritelist"]);
-
 }
 
 void GameState::initPlayerGUI()
@@ -117,7 +116,7 @@ void GameState::initPlayerGUI()
 
 void GameState::initEnemySystem()
 {
-	this->enemySystem = new EnemySystem(this->activeEnemies, this->textures);
+	this->enemySystem = new EnemySystem(this->activeEnemies, this->textures, *this->player);
 	 
 }
 
@@ -181,18 +180,16 @@ void GameState::updateView(const float& dt)
 	
 
 	//I will change + 700.f : I have to change texture scale problem
-	
+	 
+	this->view.setCenter(
+		std::floor(this->player->getPosition().x + (static_cast<float>(this->mousPosWindow.x)
+			- static_cast<float>(this->stateData->gfxSettings->resolution.width / 2)) / 10.f),
+		std::floor(this->player->getPosition().y + (static_cast<float>(this->mousPosWindow.y)
+			- static_cast<float>(this->stateData->gfxSettings->resolution.height / 2)) / 10.f)
+	);
+	 
 
-	// The screen can't move if GUI is being open
-	if (!this->playerGUI->getTabsOpen())
-	{
-		this->view.setCenter(
-			std::floor(this->player->getPosition().x + (static_cast<float>(this->mousPosWindow.x)
-				- static_cast<float>(this->stateData->gfxSettings->resolution.width / 2)) / 10.f),
-			std::floor(this->player->getPosition().y + (static_cast<float>(this->mousPosWindow.y)
-				- static_cast<float>(this->stateData->gfxSettings->resolution.height / 2)) / 10.f)
-		);
-	}
+
 
 	//Update position of the camera left right top bottom
 	
@@ -246,31 +243,31 @@ void GameState::updateInput(const float& dt)
 void GameState::updatePlayerInput(const float& dt)
 {
 	 
-	if (this->playerGUI->getTabsOpen() == false)
-	{
+	 
+	 
 		//Update player input
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
-		{
-			this->player->move(-1.f, 0.f, dt);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
+	{
+		this->player->move(-1.f, 0.f, dt);
 
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_RIGHT"))))
-		{
-			this->player->move(1.f, 0.f, dt);
-
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_UP"))))
-		{
-			this->player->move(0.f, -1.f, dt);
-
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_DOWN"))))
-		{
-			this->player->move(0.f, 1.f, dt);
-			/*if (this->getKeytime())
-				this->player->loseEXP(20);*/
-		}
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_RIGHT"))))
+	{
+		this->player->move(1.f, 0.f, dt);
+
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_UP"))))
+	{
+		this->player->move(0.f, -1.f, dt);
+
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_DOWN"))))
+	{
+		this->player->move(0.f, 1.f, dt);
+		/*if (this->getKeytime())
+			this->player->loseEXP(20);*/
+	}
+	 
 }
 
 void GameState::updatePlayerGUI(const float& dt)
@@ -300,83 +297,78 @@ void GameState::updateTileMap(const float& dt)
 
 void GameState::updatePlayer(const float& dt)
 {
-	this->player->update(dt, this->mousePosView);
+	this->player->update(dt, this->mousePosView, this->view);
 }
 
 void GameState::updateComabatAndEnemies(const float& dt)
 {
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->player->getWeapon()->getAttackTimer())
+	{
+		this->player->setInitAtack(true);
+	}
+
+
 	unsigned index = 0;
 
 	//enemies
 	for (auto* enemy : this->activeEnemies)
 	{
-		enemy->update(dt, this->mousePosView);
+		enemy->update(dt, this->mousePosView, this->view);
 
 		this->tileMap->updateWorldBoundsCollision(enemy, dt);
 		this->tileMap->updateTileCollision(enemy, dt);
+		
+		this->updateCombat(enemy, index, dt);	
 
-		this->updateCombat(enemy, index, dt);
 
 		//Dangerous!!!
 		if (enemy->isDead())
 		{
 			this->player->gainEXP(enemy->getGainExp());
-			this->tts->addTextTag(TAGTYPES::EXPERIENCE_TAG, this->player->getCenter().x, this->player->getCenter().y, static_cast<int>(enemy->getGainExp()), "", "+EXP");
+			this->tts->addTextTag(TAGTYPES::EXPERIENCE_TAG, this->player->getCenter().x - 50.f, this->player->getCenter().y - 30.f, static_cast<int>(enemy->getGainExp()), "+", "EXP");
 
 			this->enemySystem->removeEnemy(index);
-			--index;
+			continue;
 		}
+		//Problem is about enemy remove (out of view of player)
+		/*else if (enemy->getRespawnTimerDone())
+		{
+			this->enemySystem->removeEnemy(index);
+			continue;
+		}*/
 
 		++index;
 	}
+
+	this->player->setInitAtack(false);
 
 }
 
 void GameState::updateCombat(Enemy* enemy, const int index, const float& dt)
 {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) 
+	if ( this->player->getInitAtack()
 		&& enemy->getGlobalBounds().contains(this->mousePosView)
 		&& enemy->getDistance(*this->player) < this->player->getWeapon()->getRange()
+		&& enemy->getDamageTimeDone()
 		)
 	{
-		if (this->player->getWeapon()->getAttackTimer())
-		{
-			//Get to this
-			int dmg = static_cast<int>(this->player->getWeapon()->getDamage());
+		//Get to this
+		int dmg = static_cast<int>(this->player->getDamage());
 
-			enemy->loseHp(dmg);
-			this->tts->addTextTag(TAGTYPES::DEFAULT_TAG, this->player->getCenter().x, this->player->getCenter().y, dmg);
+		enemy->loseHp(dmg);
+		enemy->resetDamageTimer();
 
-		}
-
-		//if ( this->getKeytime() &&
-		//	enemy->getGlobalBounds().contains(this->mousePosView)
-		//	&& enemy->getDistance(*this->player) < 300.f)
-		//{
-		//	//Get to this
-		//	enemy->loseHp(static_cast<int>(this->player->getWeapon()->getDamgeMin()));
-
-		//	this->tts->addTextTag(TAGTYPES::DEFAULT_TAG, this->player->getCenter().x, this->player->getCenter().y,
-		//		static_cast<int>(this->player->getWeapon()->getDamgeMin()));
-
-
-		//}
-
+		this->tts->addTextTag(TAGTYPES::DEFAULT_TAG, enemy->getPosition().x + 50.f, enemy->getPosition().y, dmg, "", "");
 	}
 
+	//Check for enemy damage
 
-
-
-
-	//if (enemy->getGlobalBounds().contains(this->mousePosView)
-	//	&& enemy->getDistance(*this->player) < this->player->getWeapon()->getRange())
-	//{
-	//	//Get to this
-	//	int dmg = static_cast<int>(this->player->getWeapon()->getDamage());
-
-	//	enemy->loseHp(dmg);
-	//	this->tts->addTextTag(TAGTYPES::NEGATIVE_TAG, this->player->getCenter().x, this->player->getCenter().y, dmg, "", "-HP");
-	//}
+	if (enemy->getGlobalBounds().intersects(this->player->getGlobalBounds()) && this->player->getDamageTimer())
+	{
+		int dmg = enemy->getAttributeComp()->damageMax;
+		this->player->loseHp(dmg);
+		this->tts->addTextTag(TAGTYPES::NEGATIVE_TAG, this->player->getCenter().x - 50.f, this->player->getCenter().y, dmg, "-", "HP");
+	}
 
 }
 

@@ -354,7 +354,7 @@ void TileMap::loadFromFile(const std::string file_name)
 						sf::IntRect(trX, trY, this->gridSizeI, this->gridSizeI),
 						enemy_type,
 						enemy_am,
-						5000,
+						enemy_tts,
 						enemy_md
 					)
 				);
@@ -562,10 +562,9 @@ void TileMap::updateTiles(Entity* entity, const float& dt,
 					EnemySpawnerTile* es = dynamic_cast<EnemySpawnerTile*>(this->map[x][y][this->layer][k]);
 					if (es)
 					{
-						if (!es->getSpawned() /*&& es->getEnemyCounter() < es->getEnemyAmount()*/)
+						if (es->getSpawnTimer() /*&& es->getEnemyCounter() < es->getEnemyAmount()*/)
 						{
 							enemy_system.createEnemy(EnemyTypes::SKELETON, x * this->gridSizeF, y * this->gridSizeF, *es);
-							es->SetSpawned(true);
 							std::cout << "Spawned!" << "\n";
 						}
 						

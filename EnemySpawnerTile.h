@@ -11,7 +11,6 @@ class EnemySpawnerTile
 private:
 	sf::RectangleShape shape;
 
-
 	//Variables
 	sf::Vector2i gridPosition;
 
@@ -24,7 +23,7 @@ private:
 	sf::Clock enemySpawnTimer;
 	sf::Int32 enemyTimeToSpawn;
 	float enemyMaxDistance;
-	bool spawned;
+	bool firstSpawn;
 
 	//Spawn timer
 
@@ -39,17 +38,14 @@ public:
 
 	//Accessors
 	virtual const std::string getAsString() const;
-	const bool& getSpawned() const;
 	const int& getEnemyAmount() const;
 	const int& getEnemyCounter() const;	
-	
+	const bool getSpawnTimer();
 
 	//Modifiers
-	void SetSpawned(const bool spawned);
 
 
 	//Funtions
-	const bool canSpawn() const;
 	void increaseEnemyCounter();
 	void decreaseEnemyCounter();
 

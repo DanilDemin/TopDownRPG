@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "Charactertab.h"
 
+void CharacterTab::initText()
+{
+	this->infoText.setString(this->player.toStringCharactertab());
+}
+
 CharacterTab::CharacterTab(sf::VideoMode& vm, sf::Font font, Player& player)
 	: Tab(vm, font, player, false)
 {
@@ -10,9 +15,11 @@ CharacterTab::CharacterTab(sf::VideoMode& vm, sf::Font font, Player& player)
 
 	//Text
 	this->infoText.setFont(this->font);
-	this->infoText.setCharacterSize(gui::calcCharSize(this->vm, 50));
-	this->infoText.setFillColor(sf::Color::White);
+	this->infoText.setCharacterSize(gui::calcCharSize(this->vm, 100));
+	this->infoText.setFillColor(sf::Color(200, 200, 200, 240));
 	this->infoText.setPosition(this->back.getPosition().x + 20.f, this->back.getPosition().y + 20.f);
+
+	this->initText();
 }
 
 CharacterTab::~CharacterTab()
@@ -24,7 +31,8 @@ void CharacterTab::update()
 {
 	if (!this->hidden)
 	{
-
+		//update the charcter info
+		this->infoText.setString(this->player.toStringCharactertab());
 	}
 }
 
