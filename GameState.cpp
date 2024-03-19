@@ -99,21 +99,62 @@ void GameState::initTextures()
 	 
 
 	//Skeleton Base
-	if (!this->textures["Skeleton_Spritelist"].loadFromFile(
+	if (!this->textures["Skeleton_Base_Spritelist"].loadFromFile(
 		"Resources/Images/Sprites/Enemy/Skeleton/SkeletonBase/SkeletonSheet.png"))
 	{
 		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_ENEMY_TEXTURE";
 	}
 
-
-	//Skeleton Base
-	if (!this->textures["Skeleton_Spritelist"].loadFromFile(
-		"Resources/Images/Sprites/Enemy/Skeleton/SkeletonMage/SkeletonMageSheet.png"))
+	//Skeleton Warrior
+	if (!this->textures["Skeleton_Warrior_Spritelist"].loadFromFile(
+		"Resources/Images/Sprites/Enemy/Skeleton/SkeletonWarrior/SkeletonWarriorSheet.png"))
 	{
 		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_ENEMY_TEXTURE";
 	}
 
 
+	//Skeleton Mage
+	if (!this->textures["Skeleton_Mage_Spritelist"].loadFromFile(
+		"Resources/Images/Sprites/Enemy/Skeleton/SkeletonMage/SkeletonMageSheet.png"))
+	{
+		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_ENEMY_TEXTURE";
+	}
+
+	//Skeleton Rogue
+	if (!this->textures["Skeleton_Rogue_Spritelist"].loadFromFile(
+		"Resources/Images/Sprites/Enemy/Skeleton/SkeletonRogue/SkeletonRogueSheet.png"))
+	{
+		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_ENEMY_TEXTURE";
+	}
+
+
+	////Orc Base
+	//if (!this->textures["Orc_Warrior_Spritelist"].loadFromFile(
+	//	"Resources/Images/Sprites/Enemy/Orc/OrcWarrior/OrcWarriorSheet.png"))
+	//{
+	//	throw "ERROR::GAME_STATE::COULD_NOT_LOAD_ENEMY_TEXTURE";
+	//}
+
+
+	//Orc Warrior
+	if (!this->textures["Orc_Warrior_Spritelist"].loadFromFile(
+		"Resources/Images/Sprites/Enemy/Orc/OrcWarrior/OrcWarriorSheet.png"))
+	{
+		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_ENEMY_TEXTURE";
+	}
+
+	//Orc Mage
+	if (!this->textures["Orc_Mage_Spritelist"].loadFromFile(
+		"Resources/Images/Sprites/Enemy/Orc/OrcMage/OrcMageSheet.png"))
+	{
+		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_ENEMY_TEXTURE";
+	}
+	//Orc Rogue
+	if (!this->textures["Orc_Rogue_Spritelist"].loadFromFile(
+		"Resources/Images/Sprites/Enemy/Orc/OrcRogue/OrcRogueSheet.png"))
+	{
+		throw "ERROR::GAME_STATE::COULD_NOT_LOAD_ENEMY_TEXTURE";
+	}
 
 }
 
@@ -134,9 +175,8 @@ void GameState::initKeyTime()
 void GameState::initPlayers()
 {
 
-	CharacterCreator* creator = new WizzardCreator(this->textures);
-	this->player = creator->CreateCharacter();
-
+	this->creator = new ThiefFactory(this->textures);
+	this->player = creator->createPlayer(200.f, 200.f);
 
 }
 

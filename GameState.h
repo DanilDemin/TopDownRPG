@@ -11,9 +11,9 @@
 #include "TextTagSystem.h"
 
 
-#include "KnightCreator.h"
-#include "ThiefCreator.h"
-#include "WizzardCreator.h"
+#include "KnightFactory.h"
+#include "ThiefFactory.h"
+#include "WizzardFactory.h"
 
 
 class GameState 
@@ -32,7 +32,7 @@ private:
 	sf::Clock keyTimer;
 	float keyTimeMax;
 
-	CharacterCreator* creator;
+	PlayerFactory* creator;
 	Player* player;
 	PlayerGUI* playerGUI;
 

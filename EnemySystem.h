@@ -2,7 +2,8 @@
 
 #include "EnemySpawnerTile.h"
 #include "Skeleton.h"
-
+#include "SkeletonFactory.h"
+#include "OrcFactory.h"
 
 enum EnemyTypes
 {
@@ -20,6 +21,9 @@ enum EnemyTypes
 class EnemySystem
 {
 private:
+	EnemyFactory* skeletonFactory;
+	EnemyFactory* orcFactory;
+
 	std::map<std::string, sf::Texture>& textures;
 	std::vector<Enemy*>& activeEnemies;
 	Entity& player;

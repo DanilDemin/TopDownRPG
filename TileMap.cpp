@@ -562,12 +562,14 @@ void TileMap::updateTiles(Entity* entity, const float& dt,
 					EnemySpawnerTile* es = dynamic_cast<EnemySpawnerTile*>(this->map[x][y][this->layer][k]);
 					if (es)
 					{
+
 						if (es->getSpawnTimer() /*&& es->getEnemyCounter() < es->getEnemyAmount()*/)
 						{
-							enemy_system.createEnemy(EnemyTypes::SKELETON, x * this->gridSizeF, y * this->gridSizeF, *es);
-							std::cout << "Spawned!" << "\n";
+							//Remove Sekelton_Mage to type of tile 
+							enemy_system.createEnemy(es->getEnemyType(), x * this->gridSizeF, y * this->gridSizeF, *es);
+							std::cout << "Spawned! Type: " << es->getEnemyType() <<  "\n";
+
 						}
-						
 					}
 				}
 			}

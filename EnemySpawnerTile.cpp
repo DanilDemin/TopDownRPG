@@ -36,6 +36,11 @@ const std::string EnemySpawnerTile::getAsString() const
 	return ss.str();
 }
 
+const int& EnemySpawnerTile::getEnemyType() const
+{
+	return this->enemyType;
+}
+
 
 const int& EnemySpawnerTile::getEnemyAmount() const
 {

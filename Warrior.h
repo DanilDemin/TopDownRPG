@@ -1,7 +1,10 @@
 #pragma once
-#include "Enemy.h"
-class Warrior :
-    virtual public Enemy
+class Warrior
 {
-};
+private:
+public:
+	Warrior();
+	virtual ~Warrior();
 
+	virtual void methodOfWarrior() = 0;
+};

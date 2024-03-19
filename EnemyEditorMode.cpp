@@ -113,22 +113,6 @@ void EnemyEditorMode::updateInput(const float& dt)
 		else { this->maxDistance = 0; }
 	}
 
-
-
-
-	////Set lock on / off
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->editorStateData->keybinds->at("TOGGLE_TILE_LOCK"))) && this->getKeytime())
-	//{
-	//	if (this->tileAddLock)
-	//	{
-	//		this->tileAddLock = false;
-	//	}
-	//	else
-	//	{
-	//		this->tileAddLock = true;
-	//	}
-	//}
-
 }
 
 void EnemyEditorMode::updateGui(const float& dt)

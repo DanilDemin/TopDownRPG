@@ -4,11 +4,6 @@
 //Initializer function
 void Player::initVariables()
 {
-	/*this->attacking = false;
-	this->scale = 6.f;
-	this->sword = new Sword(20);*/
-
-	/*this->inventory = new Inventory(100);*/
 	this->weapon->generate(1, 3);
 
 	this->damageTimer.restart();
@@ -18,12 +13,6 @@ void Player::initComponent()
 {
 	
 }
-
-//void Player::initAnimation()
-//{
-//	this->animationComponent->addAnimation("IDLE", 10.f, 0, 0, 3, 0, 32, 32);
-//	this->animationComponent->addAnimation("WALK", 5.f, 0, 1, 5, 1, 64, 32);
-//}
 
 void Player::initInventory()
 {

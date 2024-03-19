@@ -29,7 +29,6 @@ private:
     //Initializer function
     void initVariables();
     void initComponent();
-    /*void initAnimation();*/
     void initInventory();
     
 public:

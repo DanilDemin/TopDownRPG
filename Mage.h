@@ -1,7 +1,11 @@
 #pragma once
-#include "Enemy.h"
-class Mage :
-    virtual public Enemy
+class Mage
 {
+private:
+public:
+	Mage();
+	virtual ~Mage();
+
+	virtual void methodOfMage() = 0;
 };
 

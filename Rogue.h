@@ -1,7 +1,11 @@
 #pragma once
-#include "Enemy.h"
-class Rogue :
-    virtual public Enemy
+class Rogue
 {
+private:
+public:
+	Rogue();
+	virtual ~Rogue();
+
+	virtual void methodOfRogue() = 0;
 };
 

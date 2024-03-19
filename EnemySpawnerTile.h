@@ -38,6 +38,7 @@ public:
 
 	//Accessors
 	virtual const std::string getAsString() const;
+	const int& getEnemyType() const;
 	const int& getEnemyAmount() const;
 	const int& getEnemyCounter() const;	
 	const bool getSpawnTimer();

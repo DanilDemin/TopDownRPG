@@ -4,7 +4,7 @@
 #include "Thief.h"
 
 
-class CharacterCreator
+class PlayerFactory
 {
 protected:
 	//Resources
@@ -12,11 +12,10 @@ protected:
 
 
 public:
-	CharacterCreator(const std::map<std::string, sf::Texture>& _textures);
-	~CharacterCreator();
+	PlayerFactory(const std::map<std::string, sf::Texture>& textures);
+	virtual ~PlayerFactory();
 
 	//Functions
-	virtual Player* CreateCharacter() = 0;
-
+	virtual Player* createPlayer(float x, float y) = 0;
 };
 
